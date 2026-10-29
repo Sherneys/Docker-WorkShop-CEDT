@@ -24,6 +24,10 @@ COPY app/ .
 # TODO(step-4d): set the runtime base image (same tag as step-4a for consistency).
 FROM node:20.11-slim
 
+# Patch Debian OS packages: the 20.11 base ships Debian 12.5, which has fixed CRITICAL CVEs.
+RUN apt-get update && apt-get upgrade -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # TODO(step-4e): copy the fully-installed app from the builder stage.
